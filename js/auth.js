@@ -67,11 +67,15 @@
 
   function init(){
     if(initPromise) return initPromise;
-    initPromise = Promise.resolve().then(function(){
-      config.assertRuntimeReady();
-      assertOriginAllowed();
-      return waitForGoogleIdentity(15000, 100);
-    }).then(function(){
+    initPromise = Promise.resolve()
+      .then(function(){
+        return config.assertRuntimeReady();
+      })
+      .then(function(){
+        assertOriginAllowed();
+        return waitForGoogleIdentity(15000, 100);
+      })
+      .then(function(){
       tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: config.clientId,
         scope: config.scopes,
